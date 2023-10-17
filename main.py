@@ -33,6 +33,7 @@ try:
             self.chat = chat
             self.chatlog = chat.ids.chatlog
             self.chatbox = chat.ids.chatbox
+            self.chatscroll = chat.ids.chatscroll
             self.username = False #has the user entered a username yet
 
         def subformatting(self, texts, trigger, opening, closing):
@@ -115,17 +116,25 @@ try:
         def format(self, text, user=None):
             formatted = self.formatting(text)
             if user is not None:
-                return f"{user}: {formatted}\n"
+                return f"\n{user}: {formatted}"
             else:
-                return f"{formatted}\n"
+                return f"\n{formatted}"
+
+        def jump_to_bottom(self, dt):
+            if self.chatscroll.vbar[1] != 1:
+                self.chatscroll.scroll_y = 0
+        def push_text(self, text):
+            self.chatlog.text += text
+            if self.chatscroll.scroll_y == 0 or self.chatscroll.vbar[1] == 1:
+                Clock.schedule_once(self.jump_to_bottom)
 
         def on_receive(self, value):
             message = loads(value)
             match message['id']:
                 case "response_chat_message":
-                    self.chatlog.text += self.format(message['data'], message['user'])
+                    self.push_text(self.format(message['data'], message['user']))
                 case "response_system_message":
-                    self.chatlog.text += self.format(message['data'])
+                    self.push_text(self.format(message['data']))
 
         def on_enter(self, value):
             self.chatbox.text = ''

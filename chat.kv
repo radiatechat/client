@@ -6,8 +6,8 @@
         Rectangle:
             size: self.size
             pos: self.pos
-<BackgroundLabel@Label+BackgroundColor>
-    #was planning to only use this as debug but i do like it
+
+<ChatLog@ScrollView+BackgroundColor>
     background_color: 0, 0, 0, 0
 
 <Chat>:
@@ -21,23 +21,33 @@
     Label:
         center_x: root.center_x
         y: root.height - 65
-        text: "Rollplayer Client v0"
+        text: "Radiate Client v1"
         font_size: 20
 
-    #Label:
-    BackgroundLabel:
-        id: chatlog
+    ChatLog:
+        id: chatscroll
         width: root.width - 30
         x: 15
         height: root.height - chatbox.top - 60
-        top: root.height - 30
-        text: "Enter a username."
-        font_size: 16
-        text_size: self.size
-        halign: 'center'
-        valign: 'bottom'
+        y: chatbox.top + 30
         background_color: 0.1, 0.1, 0.1, 1
-        markup: True
+
+        GridLayout:
+            cols: 1
+            spacing: 10
+            size_hint_y: None
+            height: chatlog.texture_size[1]
+
+            Label:
+                id: chatlog
+                text: "Enter a username."
+                text_size: self.width, None
+                size_hint: (1, None)
+                size: self.parent.width, self.texture_size[1]
+                font_size: 16
+                halign: 'center'
+                valign: 'bottom'
+                markup: True
 
     TextInput:
         id: chatbox
