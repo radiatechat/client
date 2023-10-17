@@ -1,0 +1,53 @@
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+<BackgroundLabel@Label+BackgroundColor>
+    #was planning to only use this as debug but i do like it
+    background_color: 0, 0, 0, 0
+
+<Chat>:
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        center_x: root.center_x
+        y: root.height - 65
+        text: "Rollplayer Client v0"
+        font_size: 20
+
+    #Label:
+    BackgroundLabel:
+        id: chatlog
+        width: root.width - 30
+        x: 15
+        height: root.height - chatbox.top - 60
+        top: root.height - 30
+        text: "Enter a username."
+        font_size: 16
+        text_size: self.size
+        halign: 'center'
+        valign: 'bottom'
+        background_color: 0.1, 0.1, 0.1, 1
+        markup: True
+
+    TextInput:
+        id: chatbox
+        multiline: False
+        on_text_validate: app.chathandler.on_enter(self.text)
+
+        width: root.width-20
+        center_x: root.center_x
+        height: 30
+        y: 10
+
+        background_color: (0.5,0.5,0.5,1)
+        foreground_color: (1,1,1,1)
